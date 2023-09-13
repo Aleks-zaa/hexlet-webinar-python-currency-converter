@@ -7,10 +7,22 @@
 # 7. Вывод результата
 
 CURRENCIES = {
-    "USD": 1,
-    "RUB": 96.25,
-    "EUR": 0.93,
-    "KZT": 466.24,
+    "USD": {
+        "value": 1,
+        "label": "Доллар США",
+    },
+    "RUB": {
+        "value": 96.25,
+        "label": "Российский Рубль",
+    },
+    "EUR": {
+        "value": 0.93,
+        "label": "Евро",
+    },
+    "KZT": {
+        "value": 466.24,
+        "label": "Казахстанский Тенге",
+    },
 }
 
 
@@ -36,7 +48,9 @@ print("""
 print("Доступные валюты:")
 
 for key in CURRENCIES:
-    print(f'* {key}')
+    currency = CURRENCIES.get(key)
+
+    print(f'* {key} - {currency.get("label")}')
 
 # 3
 current_currency = input("Введите исходную валюту: ")
@@ -46,6 +60,10 @@ result_currency = input("Введите результирующую валют�
 amount = input("Введите количество: ")
 
 # 6
-result = convert(float(amount), current_currency, result_currency, CURRENCIES)
+formatted_currencies = {}
+for key in CURRENCIES:
+    formatted_currencies[key] = CURRENCIES.get(key).get("value")
+
+result = convert(float(amount), current_currency, result_currency, formatted_currencies)
 
 print(f'{amount} {current_currency} = {result} {result_currency}')
