@@ -21,11 +21,10 @@ def check_curr(value):
         print('Нет такой валюты. Выберите из списка выше ')
         value = input(" ").strip().upper()
     return value
-def check_amount():
+def check_amount(value):
     i = 0
     n = ''
     while '0' not in n:
-        value = input("Введите количество: ")
         while i < len(value):
             if value[i] not in NUMER:
                 print('Необходимы только цифры')
@@ -46,6 +45,6 @@ for key in CURRENCIES:
 current_currency = check_curr(input('Введите исходную валюту: ').strip().upper())
 result_currency = check_curr(input('Введите результирующую валюту: ').strip().upper())
 
-amount = check_amount()
+amount = check_amount(input("Введите количество: "))
 result = convert(float(amount), current_currency, result_currency, CURRENCIES)
 print(f'{amount} {current_currency} = {result} {result_currency}')
