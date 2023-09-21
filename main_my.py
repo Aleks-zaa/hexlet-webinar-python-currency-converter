@@ -1,12 +1,10 @@
-# 1. Приветствие
-# 2. Мануал – как пользоваться программой и какие валюты доступны
-# 3. Ввести исходную валюту
-# 4. Ввести в какую валюту перевести
-# 5. Количество валюты
-# 6. Подсчёт
-# 7. Вывод результата
 import requests
 
+URL = "https://api.freecurrencyapi.com/v1/latest?apikey="
+API_KEY = "fca_live_VwM4HMSqi04e36YiIDOTyNtQSxiK8NH6frVaiI9V"
+NUMER = {'1': '1', '2' : '2', '3' : '3', '4' : '4', '5' : '5', '6' : '6', '7' : '7', '8' : '8', '9' : '9', '0' : '0', '.' : '.'}
+
+# Функции
 def get_actual_currencies():
     response = requests.get(URL + API_KEY)
     res_response = response.json().get('data')
@@ -19,56 +17,35 @@ def convert(amount, from_currency, to_currency, currencies):
     coefficient = to_value / from_value
     return round(amount * coefficient, 2)
 
+def check_curr(value):
+    while value not in CURRENCIES:
+        print('Нет такой валюты. Выберите из списка выше ')
+        value = input(" ").strip().upper()
+    return value
 def check_amount():
     i = 0
     n = ''
     while '0' not in n:
-        a = input("Введите количество: ")
-        while i < len(a):
-            if a[i] not in NUMER:
+        value = input("Введите количество: ")
+        while i < len(value):
+            if value[i] not in NUMER:
                 print('Необходимы только цифры')
                 n = n + '0'
-                a = input("Введите количество: ")
+                value = input("Введите количество: ")
             n = n + '1'
             i = i + 1
-        return a
+        return value
 
-URL = "https://api.freecurrencyapi.com/v1/latest?apikey="
-API_KEY = "fca_live_VwM4HMSqi04e36YiIDOTyNtQSxiK8NH6frVaiI9V"
-CURRENCIES = get_actual_currencies()
-NUMER = {'1': '1', '2' : '2', '3' : '3', '4' : '4', '5' : '5', '6' : '6', '7' : '7', '8' : '8', '9' : '9', '0' : '0', '.' : '.'}
-
-# 1
+# Исполняемая часть
 print("Добро пожаловать в конвертатор валют!")
 
-# 2
-print("""
-Инструкция:
-1. Ввести исходную валюту
-2. Ввести результирующую валюту
-3. Ввести количество валюты
-""")
-
 print("Доступные валюты:")
-
+CURRENCIES = get_actual_currencies()
 for key in CURRENCIES:
     print(f"* {key}")
 
-def check_curr(l):
-    while l not in CURRENCIES:
-        print('Нет такой валюты. Выберите из списка выше ')
-        l = input(" ").strip().upper()
-    return l
-
-iscur = 'Введите исходную валюту:'
-rescur = 'Введите результирующую валюту:'
-# 3
-cc = input(iscur + " ").strip().upper()
-current_currency = check_curr(cc)
-
-# 4
-rc = input(rescur + " ").strip().upper()
-result_currency = check_curr(rc)
+current_currency = check_curr(input('Введите исходную валюту: ').strip().upper())
+result_currency = check_curr(input('Введите результирующую валюту: ').strip().upper())
 
 amount = check_amount()
 
